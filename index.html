@@ -160,6 +160,77 @@
             color: var(--warna-utama);
         }
 
+		/* == MOBILE NAV (HAMBURGER + SIDEBAR) default hidden on desktop == */
+		.hamburger {
+			display: none;
+			width: 40px;
+			height: 40px;
+			align-items: center;
+			justify-content: center;
+			border: 0;
+			background: transparent;
+			color: var(--warna-teks-gelap);
+			cursor: pointer;
+		}
+
+		.sidebar {
+			position: fixed;
+			top: 0;
+			right: -260px; /* hidden by default */
+			width: 260px;
+			height: 100vh;
+			background: var(--warna-putih);
+			box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+			padding: 20px;
+			z-index: 200;
+			transition: right 0.3s ease;
+		}
+
+		.sidebar-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.sidebar.open { right: 0; }
+
+		.sidebar .close-btn {
+			border: 0;
+			background: transparent;
+			width: 40px;
+			height: 40px;
+			color: var(--warna-teks-gelap);
+			cursor: pointer;
+		}
+
+		.sidebar ul {
+			list-style: none;
+			padding: 20px 0 0 0;
+		}
+
+		.sidebar ul li { margin-bottom: 16px; }
+
+		.sidebar ul li a {
+			text-decoration: none;
+			color: var(--warna-teks-gelap);
+			font-weight: 600;
+			font-family: 'Montserrat', 'Arial', sans-serif !important;
+		}
+
+		.backdrop {
+			position: fixed;
+			top: 0; left: 0; right: 0; bottom: 0;
+			background: rgba(0,0,0,0.4);
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.3s ease;
+			z-index: 150;
+		}
+
+		.backdrop.show { opacity: 1; pointer-events: auto; }
+
+		body.no-scroll { overflow: hidden; }
+
         /* == 2. HERO SECTION == */
         #hero {
             background-color: var(--warna-latar-terang);
@@ -455,6 +526,28 @@
             margin: 5px 0;
         }
 
+		/* == RESPONSIVE: MOBILE ADJUSTMENTS == */
+		@media (max-width: 600px) {
+			/* Tampilkan header, sembunyikan daftar nav, gunakan hamburger */
+			header { display: block; }
+			header nav { display: none; }
+			.hamburger { display: inline-flex; }
+			/* Perkecil logo 0.6rem dari ukuran default */
+			.logo { font-size: 0.6rem; }
+			/* Cegah scroll horizontal */
+			body { overflow-x: hidden; }
+			/* Kecilkan heading agar tidak overflow dan atur pemenggalan */
+			h1 { font-size: 1.8rem; letter-spacing: 0; overflow-wrap: anywhere; }
+			h2 { font-size: 1.4rem; letter-spacing: 0; overflow-wrap: anywhere; }
+			/* Sesuaikan hero agar lebih pas di layar kecil */
+			#hero { padding: 60px 0; height: auto; min-height: 100vh; display: flex; align-items: center; }
+			#hero p { font-size: 1rem; }
+			/* Beri jarak aman antara tombol WhatsApp dan footer */
+			#kontak { padding-bottom: 40px; }
+			/* Sedikit kecilkan tombol agar tidak melebar */
+			.btn { padding: 16px 24px; }
+		}
+
     </style>
 </head>
 <body>
@@ -462,6 +555,9 @@
     <header>
         <div class="container">
             <a href="#" class="logo">Time Academy</a>
+			<button class="hamburger" id="hamburgerBtn" aria-label="Buka menu">
+				<ion-icon name="menu-outline"></ion-icon>
+			</button>
             <nav>
                 <ul>
                     <li><a href="#hero">Home</a></li>
@@ -472,6 +568,24 @@
             </nav>
         </div>
     </header>
+
+	<!-- Sidebar untuk mobile -->
+	<aside class="sidebar" id="mobileSidebar" aria-hidden="true">
+		<div class="sidebar-header">
+			<a href="#" class="logo">Time Academy</a>
+			<button class="close-btn" id="closeSidebar" aria-label="Tutup menu">
+				<ion-icon name="close-outline"></ion-icon>
+			</button>
+		</div>
+		<ul>
+			<li><a href="#hero">Home</a></li>
+			<li><a href="#informasi">Informasi</a></li>
+			<li><a href="#materi">Materi</a></li>
+			<li><a href="#kontak">Kontak</a></li>
+		</ul>
+	</aside>
+
+	<div class="backdrop" id="sidebarBackdrop"></div>
 
     <main>
         <section id="hero">
@@ -607,5 +721,35 @@
         </div>
     </footer>
 
-</body>
+	<script>
+		(function() {
+			const btn = document.getElementById('hamburgerBtn');
+			const sidebar = document.getElementById('mobileSidebar');
+			const backdrop = document.getElementById('sidebarBackdrop');
+			const closeBtn = document.getElementById('closeSidebar');
+
+			function openMenu() {
+				sidebar.classList.add('open');
+				backdrop.classList.add('show');
+				document.body.classList.add('no-scroll');
+			}
+
+			function closeMenu() {
+				sidebar.classList.remove('open');
+				backdrop.classList.remove('show');
+				document.body.classList.remove('no-scroll');
+			}
+
+			btn && btn.addEventListener('click', openMenu);
+			closeBtn && closeBtn.addEventListener('click', closeMenu);
+			backdrop && backdrop.addEventListener('click', closeMenu);
+			// Close when clicking a link inside sidebar
+			sidebar && sidebar.addEventListener('click', function(e) {
+				const target = e.target;
+				if (target.tagName === 'A') closeMenu();
+			});
+		})();
+	</script>
+
+	</body>
 </html>
