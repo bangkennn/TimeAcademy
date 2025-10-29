@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Belajar Elegan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="Figma.png">
+    <link rel="shortcut icon" type="image/png" href="Figma.png">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <style>
+        /* == FONT MATRIX MONO == */
+        @font-face {
+            font-family: 'Matrix Mono';
+            src: url('fonts/matrix-mono.woff2') format('woff2'),
+                 url('fonts/matrix-mono.woff') format('woff'),
+                 url('fonts/matrix-mono.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* == FONT MONTSERRAT == */
+        /* Montserrat sudah di-load via Google Fonts di head */
+
+        /* == PENGATURAN GLOBAL == */
+        :root {
+            --warna-utama: #290b96; /* Ungu cerah seperti di gambar */
+            --warna-latar-terang: #F5F3FF; /* Ungu lavender sangat muda */
+            --warna-teks-gelap: #222222;
+            --warna-teks-subtel: #555555;
+            --warna-putih: #FFFFFF;
+            --bayangan: 0px 4px 15px rgba(0, 0, 0, 0.05);
+            --radius-bulat: 100px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Arial', sans-serif;
+            color: var(--warna-teks-gelap);
+            line-height: 1.6;
+        }
+
+        /* Pastikan semua elemen teks menggunakan Montserrat */
+        p, span, div, a, li, td, th, label, input, textarea, select, .logo, nav ul li a {
+            font-family: 'Montserrat', 'Arial', sans-serif !important;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        h1 { 
+            font-size: 2.8rem; 
+            font-family: 'Matrix Mono', 'Courier New', monospace !important;
+            letter-spacing: 1px;
+        }
+        h2 { 
+            font-size: 2.2rem; 
+            color: var(--warna-teks-gelap);
+            font-family: 'Matrix Mono', 'Courier New', monospace !important;
+            letter-spacing: 1px;
+        }
+        p { 
+            font-size: 1rem; 
+            color: var(--warna-teks-subtel); 
+            margin-bottom: 20px;
+            font-family: 'Montserrat', 'Arial', sans-serif !important;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--warna-utama);
+            color: var(--warna-putih);
+            padding: 20px 32px;
+            border-radius: var(--radius-bulat);
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background-color: #5837de;
+        }
+
+        /* == 1. NAVIGASI / HEADER == */
+        header {
+            background: var(--warna-putih);
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--warna-utama);
+            text-decoration: none;
+            font-family: 'Matrix Mono', 'Courier New', monospace !important;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--warna-teks-subtel);
+            font-weight: 600;
+            transition: color 0.3s ease;
+            font-family: 'Montserrat', 'Arial', sans-serif !important;
+        }
+
+        nav ul li a:hover {
+            color: var(--warna-utama);
+        }
+
+        /* == 2. HERO SECTION == */
+        #hero {
+            background-color: var(--warna-latar-terang);
+            text-align: center;
+            padding: 180px 0;
+            height: 100vh;
+        }
+
+        #hero h1 {
+            color: var(--warna-teks-gelap);
+        }
+
+        #hero p {
+            font-size: 1.2rem;
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* == 3. INFORMASI SECTION == */
+        #informasi {
+            background: var(--warna-putih);
+        }
+
+        #informasi h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Tata letak dua kolom untuk informasi */
+        .info-layout {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-image-placeholder {
+            flex: 1;
+            height: 400px;  
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .info-image-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .info-layout {
+                flex-direction: column;
+            }
+            .info-image-placeholder {
+                width: 100%;
+            }
+        }
+
+        /* Join Group sub-section di dalam informasi */
+        .join-group {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .join-group h1 {
+            margin-bottom: 20px;
+        }
+
+        .join-group .qr-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0 16px 0;
+        }
+
+        .join-group img {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* == 4. MATERI PEMBELAJARAN SECTION == */
+        #materi {
+            background-color: var(--warna-latar-terang);
+        }
+
+        #materi h2 {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .materi-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .materi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .materi-card {
+            background: var(--warna-putih);
+            border: 1px solid #eee;
+            border-radius: 20px;
+            box-shadow: var(--bayangan);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .materi-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--warna-teks-gelap);
+            margin-bottom: 8px;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        .materi-subtitle {
+            font-size: 0.9rem;
+            color: var(--warna-teks-subtel);
+            margin-bottom: 16px;
+            line-height: 1.4;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        .materi-actions { margin-top: auto; }
+
+        .materi-actions .btn { width: 100%; text-align: center; }
+
+        .btn.disabled,
+        .btn[aria-disabled="true"] {
+            pointer-events: none;
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #b5b5b5;
+            color: #ffffff;
+        }
+
+        @media (max-width: 992px) {
+            .materi-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .materi-grid { grid-template-columns: 1fr; }
+        }
+
+        /* == 5. KONTAK SECTION == */
+        #kontak {
+            background: var(--warna-putih);
+            padding-bottom: 0; /* Hilangkan jarak bawah agar menyatu dengan footer */
+        }
+
+        #kontak h2 {
+            text-align: left;
+
+        }
+
+        .kontak-layout {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .kontak-text { flex: 1; }
+
+        .kontak-image {
+            flex: 1;
+            height: 400px;
+            display: flex;
+            align-items: flex-end; /* Tempelkan gambar ke bawah section */
+            justify-content: center;
+        }
+
+        .kontak-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-bulat);
+            display: block; /* Hilangkan celah baseline inline image */
+        }
+
+        .btn-wa {
+            background-color: #25D366;
+        }
+
+        .btn-wa:hover {
+            background-color: #1ebe5d;
+        }
+
+        @media (max-width: 768px) {
+            #kontak h2 { text-align: center; }
+            .kontak-layout { flex-direction: column; }
+        }
+
+        /* == 6. FOOTER == */
+        footer {
+            background: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            color: #ffffff;
+            font-size: 28px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-2px);
+        }
+
+        .instagram-icon {
+            color: #E4405F;
+        }
+
+        .linkedin-icon {
+            color: #0077b5;
+        }
+
+        .personal-projects {
+            margin-bottom: 30px;
+        }
+
+        .personal-projects h3 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        .project-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .project-btn {
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        .project-btn:hover {
+            background: #ffffff;
+            color: #1a1a1a;
+        }
+
+        .footer-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+
+        .copyright {
+            color: #cccccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .copyright p {
+            margin: 5px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="#" class="logo">Time Academy</a>
+            <nav>
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#informasi">Informasi</a></li>
+                    <li><a href="#materi">Materi</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h1>BE THE BEST UI/UX DESIGNER</h1>
+                <p>Temukan materi pembelajaran interaktif dan berkualitas di bidang UI UX Design untuk meningkatkan keahlian Anda di berbagai bidang.</p>
+                <a href="#materi" class="btn">Mulai Belajar Sekarang</a>
+                
+            </div>
+        </section>
+
+        <section id="informasi">
+            <div class="container">
+                <h1>Klub Akademis UI/UX</h1>
+                <div class="info-layout">
+                    <div class="info-text">
+                        <p>Klub Akademis UI/UX STMIK TIME adalah wadah yang didedikasikan bagi mahasiswa untuk menjadi pusat pembelajaran, kolaborasi, dan inovasi di bidang User Interface (UI) dan User Experience (UX). Klub ini berfokus pada penguasaan tools standar industri, khususnya Figma, yang akan digunakan dalam seluruh proses kreatif mulai dari brainstorming, wireframing, prototyping, hingga desain interface akhir. Di bawah bimbingan langsung Davian Putra Swardana, para anggota tidak hanya akan belajar menguasai Figma secara komprehensif, tetapi juga mendalami prinsip-prinsip desain yang efektif untuk menciptakan solusi digital yang fungsional, intuitif, dan berdampak.</p>
+                    </div>
+                    <div class="info-image-placeholder">
+                        <img src="figma.png" alt="Ikon Figma">
+                    </div>
+                </div>
+
+                <div class="join-group">
+                    <h1>Join Group</h1>
+                    <div class="qr-wrapper">
+                        <img src="QR.png" alt="QR Code Join Group UI/UX">
+                    </div>
+                    <p>Bergabunglah ke grup UI/UX untuk mendapatkan informasi akademik terbaru, pengumuman kegiatan, <br> dan materi pembelajaran yang up to date.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="materi">
+            <div class="container">
+                <h2>Materi Pembelajaran</h2>
+                <div class="materi-container">
+                    <div class="materi-grid">
+                        <div class="materi-card">
+                            <div class="materi-title">Pertemuan 1</div>
+                            <div class="materi-subtitle">Introduction to User Interfaces with Figma</div>
+                            <div class="materi-actions">
+                                <a class="btn" href="pdf/1.pdf" download>Unduh PDF</a>
+                            </div>
+                        </div>
+
+                        <div class="materi-card">
+                            <div class="materi-title">Pertemuan 2</div>
+                            <div class="materi-subtitle">Project Setting and Auto Layout</div>
+                            <div class="materi-actions">
+                                <span class="btn disabled" aria-disabled="true">Tersedia dalam [tanggal]</span>
+                            </div>
+                        </div>
+
+                        <div class="materi-card">
+                            <div class="materi-title">Pertemuan 3</div>
+                            <div class="materi-subtitle">Component and Assets</div>
+                            <div class="materi-actions">
+                                <span class="btn disabled" aria-disabled="true">Tersedia dalam [tanggal]</span>
+                            </div>
+                        </div>
+
+                        <div class="materi-card">
+                            <div class="materi-title">Pertemuan 4</div>
+                            <div class="materi-subtitle">Prototyping and Advance Animation</div>
+                            <div class="materi-actions">
+                                <span class="btn disabled" aria-disabled="true">Tersedia dalam [tanggal]</span>
+                            </div>
+                        </div>
+
+                        <div class="materi-card">
+                            <div class="materi-title">Pertemuan 5</div>
+                            <div class="materi-subtitle">Introduction to User Experience</div>
+                            <div class="materi-actions">
+                                <span class="btn disabled" aria-disabled="true">Tersedia dalam [tanggal]</span>
+                            </div>
+                        </div>
+
+                        <div class="materi-card">
+                            <div class="materi-title">Pertemuan 6</div>
+                            <div class="materi-subtitle">UX Law's (for Better Experience)</div>
+                            <div class="materi-actions">
+                                <span class="btn disabled" aria-disabled="true">Tersedia dalam [tanggal]</span>
+                            </div>
+                        </div>
+
+                        <div class="materi-card">
+                            <div class="materi-title">Pertemuan 7</div>
+                            <div class="materi-subtitle">Best Plugin of All Time & Assignment Evaluation</div>
+                            <div class="materi-actions">
+                                <span class="btn disabled" aria-disabled="true">Tersedia dalam [tanggal]</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kontak">
+            <div class="container">
+                <div class="kontak-layout">
+                    <div class="kontak-image">
+                        <img src="Me.png" alt="Foto atau ilustrasi">
+                    </div>
+                    <div class="kontak-text">
+                        <h2>Check This</h2>
+                        <p>tanya lebih lanjut seputar Klub Akademis UI/UX, hubungi Saya melalui WhatsApp. Saya akan dengan senang hati merespons dan membantu kamu.</p>
+                        <p><strong>WhatsApp:</strong> 0851-7989-6109</p>
+                        <a class="btn btn-wa" href="https://wa.me/6285179896109" target="_blank" rel="noopener">Chat WhatsApp Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="https://www.instagram.com/gwadan_v/" aria-label="Instagram" class="instagram-icon">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a>
+                <a href="https://www.linkedin.com/in/davian-putra-swardana/" aria-label="LinkedIn" class="linkedin-icon">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+            </div>
+            
+            <div class="footer-title">Time Academy</div>
+            
+            <div class="copyright">
+                <p>Copyright © 2025 Time Academy</p>
+                <p>All Rights Reserved. Developed By Davian Putra Swardana</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
