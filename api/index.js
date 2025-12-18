@@ -35,10 +35,23 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Helper to get paths (works in both local and Vercel)
 function getBasePath() {
-  // In Vercel, __dirname points to /var/task/api
-  // We need to go up one level to access root files
+  // In Vercel, static files are in /var/task (root of deployment)
+  // __dirname points to /var/task/api, so we go up one level
   if (process.env.VERCEL || process.env.VERCEL_ENV) {
-    return path.join(__dirname, '..');
+    // Try multiple possible paths
+    const possiblePaths = [
+      path.join(__dirname, '..'),           // /var/task
+      path.join(process.cwd()),             // Current working directory
+      '/var/task'                           // Direct path
+    ];
+    
+    // Return the first path that exists or the first one as fallback
+    for (const p of possiblePaths) {
+      if (fs.existsSync(p)) {
+        return p;
+      }
+    }
+    return possiblePaths[0]; // Fallback to first
   }
   return __dirname;
 }
@@ -46,36 +59,32 @@ function getBasePath() {
 const basePath = getBasePath();
 const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
 
-// IMPORTANT: Serve root path FIRST before other routes
+// IMPORTANT: In Vercel, we should NOT serve static files through serverless function
+// Let Vercel handle static files automatically
+// Only handle API routes and admin.html
+
+// For root path, redirect to index.html (Vercel will serve it)
 app.get('/', (req, res) => {
-  try {
+  // In Vercel, let Vercel serve the static file
+  // We just redirect or let it pass through
+  if (isVercel) {
+    // Try to serve if file exists, otherwise let Vercel handle it
     const indexPath = path.join(basePath, 'index.html');
-    console.log('Serving index.html from:', indexPath);
-    console.log('File exists:', fs.existsSync(indexPath));
-    
     if (fs.existsSync(indexPath)) {
       res.sendFile(indexPath);
     } else {
-      console.error('index.html not found at:', indexPath);
-      res.status(404).send('index.html not found at: ' + indexPath);
+      // If file doesn't exist in expected location, 
+      // Vercel should handle it automatically via static file serving
+      res.redirect('/index.html');
     }
-  } catch (error) {
-    console.error('Error serving index.html:', error);
-    res.status(500).send('Error: ' + error.message);
-  }
-});
-
-// Serve index.html explicitly
-app.get('/index.html', (req, res) => {
-  try {
+  } else {
+    // Local development - serve the file
     const indexPath = path.join(basePath, 'index.html');
     if (fs.existsSync(indexPath)) {
       res.sendFile(indexPath);
     } else {
       res.status(404).send('index.html not found');
     }
-  } catch (error) {
-    res.status(500).send('Error: ' + error.message);
   }
 });
 
