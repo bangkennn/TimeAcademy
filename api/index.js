@@ -43,28 +43,45 @@ function getBasePath() {
   return __dirname;
 }
 
+// Helper to get base path
+const basePath = getBasePath();
+const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+
+// Serve root path (index.html)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(basePath, 'index.html'));
+});
+
+// Serve index.html explicitly
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(basePath, 'index.html'));
+});
+
 // Protect admin.html
 app.get('/admin.html', (req, res, next) => {
   if (req.session && req.session.isAuthenticated) {
-    const basePath = getBasePath();
     return res.sendFile(path.join(basePath, 'admin.html'));
   } else {
     return res.redirect('/index.html?login=required');
   }
 });
 
-// Serve static files
-// Note: In Vercel, static files are served automatically by Vercel
-// We only need to serve static files in local development
-const basePath = getBasePath();
-const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
-
+// Serve static files (images, fonts, etc.)
 if (!isVercel) {
-  // Only serve static files in local development
+  // Local development - serve all static files
   app.use(express.static(basePath, {
     index: ['index.html']
   }));
   app.use('/pdf', express.static(path.join(basePath, 'pdf')));
+} else {
+  // In Vercel, serve static assets that might not be caught by filesystem handler
+  app.use('/pdf', express.static(path.join(basePath, 'pdf')));
+  
+  // Serve other static files (images, fonts, etc.)
+  app.use(express.static(basePath, {
+    index: false, // Don't serve index.html here, we handle it above
+    dotfiles: 'ignore'
+  }));
 }
 
 // Authentication credentials
