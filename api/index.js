@@ -43,27 +43,39 @@ function getBasePath() {
   return __dirname;
 }
 
-// Helper to get base path
 const basePath = getBasePath();
 const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
 
-// Serve root path - serve index.html
+// IMPORTANT: Serve root path FIRST before other routes
 app.get('/', (req, res) => {
-  const indexPath = path.join(basePath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).send('index.html not found');
+  try {
+    const indexPath = path.join(basePath, 'index.html');
+    console.log('Serving index.html from:', indexPath);
+    console.log('File exists:', fs.existsSync(indexPath));
+    
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      console.error('index.html not found at:', indexPath);
+      res.status(404).send('index.html not found at: ' + indexPath);
+    }
+  } catch (error) {
+    console.error('Error serving index.html:', error);
+    res.status(500).send('Error: ' + error.message);
   }
 });
 
 // Serve index.html explicitly
 app.get('/index.html', (req, res) => {
-  const indexPath = path.join(basePath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).send('index.html not found');
+  try {
+    const indexPath = path.join(basePath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.status(404).send('index.html not found');
+    }
+  } catch (error) {
+    res.status(500).send('Error: ' + error.message);
   }
 });
 
@@ -84,8 +96,7 @@ if (!isVercel) {
   }));
   app.use('/pdf', express.static(path.join(basePath, 'pdf')));
 } else {
-  // In Vercel, serve static files through serverless function
-  // This ensures all files are accessible
+  // In Vercel, serve all static files through serverless function
   app.use('/pdf', express.static(path.join(basePath, 'pdf')));
   
   // Serve other static files (CSS, JS, images, fonts)
@@ -322,15 +333,6 @@ app.post('/api/upload', requireAuth, upload.single('pdf'), async (req, res) => {
       // In Vercel, files uploaded to /tmp are temporary
       // WARNING: Files in /tmp will be deleted after function execution
       // For production, you should upload to Vercel Blob Storage or other cloud storage
-      // For now, we'll save the file reference but the actual file won't persist
-      
-      // TODO: Implement cloud storage upload here
-      // Example with Vercel Blob (requires @vercel/blob package):
-      // const { put } = require('@vercel/blob');
-      // const blob = await put(req.file.filename, req.file.buffer, {
-      //   access: 'public',
-      //   contentType: 'application/pdf'
-      // });
       
       return res.json({
         message: 'File berhasil diunggah (temporary)',
@@ -353,4 +355,3 @@ app.post('/api/upload', requireAuth, upload.single('pdf'), async (req, res) => {
 
 // Export as Vercel serverless function
 module.exports = app;
-
