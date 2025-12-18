@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Time Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="Figma.png">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        /* == FONT MATRIX MONO == */
+        @font-face {
+            font-family: 'Matrix Mono';
+            src: url('fonts/Matrix_Mono.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* == VARIABLES == */
+        :root {
+            --warna-utama: #290b96;
+            --warna-latar-terang: #F5F3FF;
+            --warna-teks-gelap: #222222;
+            --warna-teks-subtel: #555555;
+            --warna-putih: #FFFFFF;
+            --warna-sidebar: #FFFFFF;
+            --warna-header: #FFFFFF;
+            --warna-hover: #F5F3FF;
+            --bayangan: 0px 4px 15px rgba(0, 0, 0, 0.05);
+            --radius-bulat: 100px;
+            --radius-card: 12px;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Arial', sans-serif;
+            background: var(--warna-latar-terang);
+            color: var(--warna-teks-gelap);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* == LAYOUT STRUCTURE == */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* == SIDEBAR == */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--warna-sidebar);
+            border-right: 1px solid #e5e7eb;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .sidebar-logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--warna-utama);
+            text-decoration: none;
+            font-family: 'Matrix Mono', 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            margin: 4px 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--warna-teks-subtel);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            background: var(--warna-hover);
+            color: var(--warna-utama);
+        }
+
+        .nav-link.active {
+            background: var(--warna-utama);
+            color: var(--warna-putih);
+        }
+
+        .nav-link ion-icon {
+            font-size: 20px;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--warna-utama);
+            color: var(--warna-putih);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--warna-teks-gelap);
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--warna-teks-subtel);
+        }
+
+        /* == MAIN CONTENT == */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* == TOP HEADER == */
+        .top-header {
+            background: var(--warna-header);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--warna-teks-gelap);
+            font-family: 'Matrix Mono', 'Courier New', monospace;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--warna-teks-subtel);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-icon:hover {
+            background: var(--warna-hover);
+            color: var(--warna-utama);
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: var(--warna-putih);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-1px);
+        }
+
+        /* == CONTENT AREA == */
+        .content-wrapper {
+            flex: 1;
+            padding: 32px;
+        }
+
+        /* == ALERT == */
+        .alert {
+            padding: 16px 20px;
+            border-radius: var(--radius-card);
+            margin-bottom: 24px;
+            display: none;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #dc3545;
+        }
+
+        .alert.show {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert ion-icon {
+            font-size: 24px;
+        }
+
+        /* == CARDS == */
+        .card {
+            background: var(--warna-putih);
+            border-radius: var(--radius-card);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--bayangan);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--warna-teks-gelap);
+            font-family: 'Matrix Mono', 'Courier New', monospace;
+        }
+
+        /* == FORMS == */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--warna-teks-gelap);
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: var(--warna-putih);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--warna-utama);
+            box-shadow: 0 0 0 3px rgba(41, 11, 150, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--warna-utama);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--warna-utama);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            background: var(--warna-latar-terang);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            background: #e8e3ff;
+            border-color: #5837de;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--warna-utama);
+            font-weight: 600;
+        }
+
+        .file-upload-label ion-icon {
+            font-size: 32px;
+        }
+
+        .file-name {
+            margin-top: 12px;
+            color: var(--warna-teks-subtel);
+            font-size: 0.9rem;
+        }
+
+        /* == BUTTONS == */
+        .btn {
+            background-color: var(--warna-utama);
+            color: var(--warna-putih);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: #5837de;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(41, 11, 150, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* == MATERIALS LIST == */
+        .materials-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .material-item {
+            background: var(--warna-putih);
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius-card);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .material-item:hover {
+            box-shadow: var(--bayangan);
+            border-color: var(--warna-utama);
+        }
+
+        .material-info {
+            flex: 1;
+        }
+
+        .material-info h3 {
+            color: var(--warna-utama);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .material-info p {
+            color: var(--warna-teks-subtel);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .material-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .material-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-unavailable {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .material-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--warna-teks-subtel);
+        }
+
+        /* == RESPONSIVE == */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            background: transparent;
+            color: var(--warna-teks-gelap);
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--warna-hover);
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 90;
+        }
+
+        .backdrop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 20px;
+            }
+
+            .material-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .material-actions {
+                width: 100%;
+                margin-top: 16px;
+            }
+
+            .material-actions .btn {
+                flex: 1;
+            }
+
+            .top-header {
+                padding: 12px 20px;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="/index.html" class="sidebar-logo">
+                    Time Academy
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="#" class="nav-link active" data-section="materials">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>Materi Pembelajaran</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/index.html" class="nav-link" target="_blank">
+                        <ion-icon name="home-outline"></ion-icon>
+                        <span>Kembali ke Home</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div class="user-details">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <ion-icon name="menu-outline"></ion-icon>
+                    </button>
+                    <h1 class="page-title">Admin Panel</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="logout-btn" id="logoutBtn">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                <div id="alert" class="alert"></div>
+
+                <!-- Form Tambah/Edit Materi -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" id="formTitle">Tambah Materi Baru</h2>
+                    </div>
+                    <form id="materialForm">
+                        <input type="hidden" id="materialId" value="">
+                        
+                        <div class="form-group">
+                            <label for="title" class="form-label">Judul Materi</label>
+                            <input type="text" id="title" class="form-input" required placeholder="Contoh: Pertemuan 1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subtitle" class="form-label">Subtitle/Deskripsi</label>
+                            <input type="text" id="subtitle" class="form-input" required placeholder="Contoh: Introduction to User Interfaces with Figma">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="isAvailable" class="form-label">Status Ketersediaan</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="isAvailable" class="form-checkbox">
+                                <label for="isAvailable" style="margin: 0; font-weight: 400;">Materi tersedia untuk diunduh</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="availableDateGroup" style="display: none;">
+                            <label for="availableDate" class="form-label">Tanggal Ketersediaan</label>
+                            <input type="date" id="availableDate" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Upload File PDF</label>
+                            <div class="file-upload" id="fileUpload">
+                                <label for="pdfFile" class="file-upload-label">
+                                    <ion-icon name="cloud-upload-outline"></ion-icon>
+                                    <span>Klik untuk memilih file PDF atau drag & drop di sini</span>
+                                </label>
+                                <input type="file" id="pdfFile" accept=".pdf">
+                                <div class="file-name" id="fileName"></div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn" id="submitBtn">
+                                <ion-icon name="save-outline"></ion-icon>
+                                <span>Simpan Materi</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="cancelBtn" style="display: none;">
+                                <ion-icon name="close-outline"></ion-icon>
+                                <span>Batal</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Daftar Materi -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Daftar Materi</h2>
+                    </div>
+                    <div id="materialsList" class="materials-list">
+                        <div class="loading">Memuat data...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let materials = [];
+        let editingId = null;
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('backdrop');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            backdrop.classList.toggle('show');
+            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+        }
+
+        mobileMenuBtn?.addEventListener('click', toggleSidebar);
+        backdrop?.addEventListener('click', toggleSidebar);
+
+        // Check authentication on page load
+        (async function() {
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/check`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (!data.authenticated) {
+                    window.location.href = '/index.html?login=required';
+                    return;
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                window.location.href = '/index.html?login=required';
+            }
+        })();
+
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch(`${API_BASE}/api/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    window.location.href = '/index.html';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/index.html';
+            }
+        });
+
+        // DOM Elements
+        const alertDiv = document.getElementById('alert');
+        const materialForm = document.getElementById('materialForm');
+        const materialsList = document.getElementById('materialsList');
+        const pdfFileInput = document.getElementById('pdfFile');
+        const fileNameDiv = document.getElementById('fileName');
+        const isAvailableCheckbox = document.getElementById('isAvailable');
+        const availableDateGroup = document.getElementById('availableDateGroup');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const formTitle = document.getElementById('formTitle');
+
+        // Show alert
+        function showAlert(message, type = 'success') {
+            const icon = type === 'success' ? 'checkmark-circle' : 'alert-circle';
+            alertDiv.innerHTML = `<ion-icon name="${icon}-outline"></ion-icon><span>${message}</span>`;
+            alertDiv.className = `alert alert-${type} show`;
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        // Load materials
+        async function loadMaterials() {
+            try {
+                const response = await fetch(`${API_BASE}/api/materials`, {
+                    credentials: 'include'
+                });
+                materials = await response.json();
+                renderMaterials();
+            } catch (error) {
+                showAlert('Gagal memuat data materi', 'error');
+                console.error(error);
+            }
+        }
+
+        // Render materials list
+        function renderMaterials() {
+            if (materials.length === 0) {
+                materialsList.innerHTML = '<p style="text-align: center; padding: 40px; color: var(--warna-teks-subtel);">Tidak ada materi. Tambahkan materi baru menggunakan form di atas.</p>';
+                return;
+            }
+
+            materialsList.innerHTML = materials.map(material => `
+                <div class="material-item">
+                    <div class="material-info">
+                        <h3>${material.title}</h3>
+                        <p>${material.subtitle}</p>
+                        <div class="material-meta">
+                            <span class="material-status ${material.isAvailable ? 'status-available' : 'status-unavailable'}">
+                                <ion-icon name="${material.isAvailable ? 'checkmark-circle' : 'time-outline'}"></ion-icon>
+                                ${material.isAvailable ? 'Tersedia' : 'Belum Tersedia'}
+                            </span>
+                            ${material.pdfFile ? `<span style="color: var(--warna-teks-subtel); font-size: 0.85rem;">📄 ${material.pdfFile}</span>` : ''}
+                        </div>
+                        ${!material.isAvailable && material.availableDate ? 
+                            `<p style="margin-top: 8px; font-size: 0.85rem; color: var(--warna-teks-subtel);">Tersedia pada: ${new Date(material.availableDate).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>` : ''}
+                    </div>
+                    <div class="material-actions">
+                        <button class="btn btn-success btn-small" onclick="editMaterial(${material.id})">
+                            <ion-icon name="create-outline"></ion-icon>
+                            <span>Edit</span>
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="deleteMaterial(${material.id})">
+                            <ion-icon name="trash-outline"></ion-icon>
+                            <span>Hapus</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Handle file input
+        pdfFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileNameDiv.textContent = `File terpilih: ${file.name}`;
+            }
+        });
+
+        // Handle checkbox change
+        isAvailableCheckbox.addEventListener('change', function() {
+            availableDateGroup.style.display = this.checked ? 'none' : 'block';
+        });
+
+        // Handle form submit
+        materialForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const pdfFile = pdfFileInput.files[0];
+            
+            if (pdfFile) {
+                formData.append('pdf', pdfFile);
+                formData.append('filename', pdfFile.name);
+            }
+
+            try {
+                // Upload PDF if file is selected
+                let pdfFileName = null;
+                if (pdfFile) {
+                    const uploadResponse = await fetch(`${API_BASE}/api/upload`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        body: formData
+                    });
+                    
+                    if (!uploadResponse.ok) {
+                        throw new Error('Gagal mengunggah file PDF');
+                    }
+                    
+                    const uploadResult = await uploadResponse.json();
+                    pdfFileName = uploadResult.filename;
+                }
+
+                // Prepare material data
+                const materialData = {
+                    title: document.getElementById('title').value,
+                    subtitle: document.getElementById('subtitle').value,
+                    isAvailable: isAvailableCheckbox.checked,
+                    availableDate: isAvailableCheckbox.checked ? null : document.getElementById('availableDate').value || null
+                };
+
+                if (pdfFileName) {
+                    materialData.pdfFile = pdfFileName;
+                }
+
+                // Create or update material
+                const materialId = document.getElementById('materialId').value;
+                let response;
+                
+                if (materialId && editingId) {
+                    // Update existing material
+                    if (!pdfFileName) {
+                        // Keep existing PDF if no new file uploaded
+                        const existingMaterial = materials.find(m => m.id === parseInt(materialId));
+                        if (existingMaterial && existingMaterial.pdfFile) {
+                            materialData.pdfFile = existingMaterial.pdfFile;
+                        }
+                    }
+                    response = await fetch(`${API_BASE}/api/materials/${materialId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(materialData)
+                    });
+                } else {
+                    // Create new material
+                    if (!pdfFileName) {
+                        materialData.pdfFile = null;
+                    }
+                    response = await fetch(`${API_BASE}/api/materials`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(materialData)
+                    });
+                }
+
+                if (!response.ok) {
+                    throw new Error('Gagal menyimpan materi');
+                }
+
+                showAlert('Materi berhasil disimpan!', 'success');
+                resetForm();
+                loadMaterials();
+            } catch (error) {
+                showAlert(error.message || 'Gagal menyimpan materi', 'error');
+                console.error(error);
+            }
+        });
+
+        // Edit material
+        async function editMaterial(id) {
+            const material = materials.find(m => m.id === id);
+            if (!material) return;
+
+            editingId = id;
+            document.getElementById('materialId').value = id;
+            document.getElementById('title').value = material.title;
+            document.getElementById('subtitle').value = material.subtitle;
+            isAvailableCheckbox.checked = material.isAvailable;
+            availableDateGroup.style.display = material.isAvailable ? 'none' : 'block';
+            document.getElementById('availableDate').value = material.availableDate || '';
+            pdfFileInput.value = '';
+            fileNameDiv.textContent = material.pdfFile ? `File saat ini: ${material.pdfFile}` : '';
+            
+            formTitle.textContent = 'Edit Materi';
+            cancelBtn.style.display = 'inline-flex';
+            materialForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Delete material
+        async function deleteMaterial(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/materials/${id}?deleteFile=true`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal menghapus materi');
+                }
+
+                showAlert('Materi berhasil dihapus!', 'success');
+                loadMaterials();
+            } catch (error) {
+                showAlert('Gagal menghapus materi', 'error');
+                console.error(error);
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            materialForm.reset();
+            document.getElementById('materialId').value = '';
+            editingId = null;
+            fileNameDiv.textContent = '';
+            availableDateGroup.style.display = 'none';
+            formTitle.textContent = 'Tambah Materi Baru';
+            cancelBtn.style.display = 'none';
+        }
+
+        // Cancel edit
+        cancelBtn.addEventListener('click', resetForm);
+
+        // Initialize
+        loadMaterials();
+    </script>
+</body>
+</html>

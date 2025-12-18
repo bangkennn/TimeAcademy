@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "Pertemuan 1",
+    "subtitle": "Introduction to User Interfaces with Figma",
+    "pdfFile": "1.pdf",
+    "isAvailable": true,
+    "availableDate": null
+  },
+  {
+    "id": 2,
+    "title": "Pertemuan 2",
+    "subtitle": "Project Setting and Auto Layout",
+    "pdfFile": "2.pdf",
+    "isAvailable": true,
+    "availableDate": null
+  },
+  {
+    "id": 3,
+    "title": "Pertemuan 3",
+    "subtitle": "Component and Assets",
+    "pdfFile": "3.pdf",
+    "isAvailable": true,
+    "availableDate": null
+  },
+  {
+    "id": 4,
+    "title": "Pertemuan 4",
+    "subtitle": "Prototyping and Advance Animation",
+    "pdfFile": "4.pdf",
+    "isAvailable": true,
+    "availableDate": null
+  },
+  {
+    "id": 5,
+    "title": "Pertemuan 5",
+    "subtitle": "Introduction to User Experience",
+    "pdfFile": "Pengenalan UX.pdf",
+    "isAvailable": true,
+    "availableDate": null
+  },
+  {
+    "id": 6,
+    "title": "Pertemuan 6",
+    "subtitle": "UX Law's (for Better Experience)",
+    "pdfFile": null,
+    "isAvailable": false,
+    "availableDate": "2026-01-08"
+  },
+  {
+    "id": 7,
+    "title": "Pertemuan 7",
+    "subtitle": "Best Plugin of All Time & Assignment Evaluation",
+    "pdfFile": null,
+    "isAvailable": false,
+    "availableDate": "2026-01-15"
+  }
+]
