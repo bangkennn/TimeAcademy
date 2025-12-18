@@ -56,27 +56,8 @@ app.get('/admin.html', (req, res, next) => {
   }
 });
 
-// Serve root path - serve index.html
-app.get('/', (req, res) => {
-  const indexPath = path.join(basePath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).send('index.html not found');
-  }
-});
-
-// Serve index.html explicitly
-app.get('/index.html', (req, res) => {
-  const indexPath = path.join(basePath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).send('index.html not found');
-  }
-});
-
-// Serve static files
+// Serve static files only in local development
+// In Vercel, static files (index.html, CSS, JS, images) are served automatically by Vercel
 if (!isVercel) {
   // Local development - serve all static files
   app.use(express.static(basePath, {
@@ -84,15 +65,9 @@ if (!isVercel) {
   }));
   app.use('/pdf', express.static(path.join(basePath, 'pdf')));
 } else {
-  // In Vercel, serve static files as fallback
-  // This ensures files are accessible even if Vercel's filesystem handler doesn't catch them
+  // In Vercel, only serve PDF files through serverless function
+  // Other static files are served automatically by Vercel
   app.use('/pdf', express.static(path.join(basePath, 'pdf')));
-  
-  // Serve other static files (images, fonts, CSS, JS)
-  app.use(express.static(basePath, {
-    index: false, // We handle index.html explicitly above
-    dotfiles: 'ignore'
-  }));
 }
 
 // Authentication credentials

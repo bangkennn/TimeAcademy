@@ -8,13 +8,12 @@
     {
       "src": "/admin.html",
       "dest": "/api/index.js"
-    },
+    }
+  ],
+  "rewrites": [
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
+      "source": "/",
+      "destination": "/index.html"
     }
   ],
   "functions": {
