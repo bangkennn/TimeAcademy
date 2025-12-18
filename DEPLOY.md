@@ -65,14 +65,30 @@
 
 ## Environment Variables (Opsional)
 
-Jika ingin mengubah kredensial admin, tambahkan di Vercel Dashboard:
+Jika ingin mengubah kredensial admin atau meningkatkan security, tambahkan di Vercel Dashboard:
 
 1. Buka project di Vercel Dashboard
 2. Settings > Environment Variables
-3. Tambahkan:
-   - `ADMIN_USERNAME` = username admin Anda
-   - `ADMIN_PASSWORD` = password admin Anda
-   - `SESSION_SECRET` = secret key untuk session (random string)
+3. Tambahkan (lihat `ENV_VARIABLES.md` untuk detail lengkap):
+
+   **Minimum untuk Production:**
+   - `SESSION_SECRET` = secret key untuk session (generate random string)
+   - `ADMIN_PASSWORD` = password admin yang kuat
+
+   **Opsional:**
+   - `ADMIN_USERNAME` = username admin (default: `davian`)
+
+   **Cara Generate SESSION_SECRET:**
+   ```bash
+   # Linux/Mac
+   openssl rand -hex 32
+   # atau
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+
+   **Setelah menambah environment variables, jangan lupa REDEPLOY project!**
+
+   📖 **Lihat `ENV_VARIABLES.md` untuk panduan lengkap**
 
 ## Catatan Penting
 
