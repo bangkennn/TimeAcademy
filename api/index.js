@@ -54,10 +54,12 @@ app.get('/admin.html', (req, res, next) => {
 });
 
 // Serve static files
-// Note: In Vercel, static files are served automatically, 
-// but we still need this for API routes that serve files
+// Note: In Vercel, static files are served automatically by Vercel
+// We only need to serve static files in local development
 const basePath = getBasePath();
-if (!process.env.VERCEL && !process.env.VERCEL_ENV) {
+const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+
+if (!isVercel) {
   // Only serve static files in local development
   app.use(express.static(basePath, {
     index: ['index.html']
