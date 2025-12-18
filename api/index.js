@@ -63,28 +63,85 @@ const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
 // Let Vercel handle static files automatically
 // Only handle API routes and admin.html
 
-// For root path, redirect to index.html (Vercel will serve it)
+// Serve root path - read and serve index.html as string
 app.get('/', (req, res) => {
-  // In Vercel, let Vercel serve the static file
-  // We just redirect or let it pass through
-  if (isVercel) {
-    // Try to serve if file exists, otherwise let Vercel handle it
-    const indexPath = path.join(basePath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
-    } else {
-      // If file doesn't exist in expected location, 
-      // Vercel should handle it automatically via static file serving
-      res.redirect('/index.html');
+  try {
+    // Try multiple possible paths for index.html
+    const possiblePaths = [
+      path.join(__dirname, '..', 'index.html'),
+      path.join(process.cwd(), 'index.html'),
+      '/var/task/index.html',
+      path.join(basePath, 'index.html')
+    ];
+    
+    let indexPath = null;
+    for (const p of possiblePaths) {
+      if (fs.existsSync(p)) {
+        indexPath = p;
+        break;
+      }
     }
-  } else {
-    // Local development - serve the file
-    const indexPath = path.join(basePath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
+    
+    if (indexPath && fs.existsSync(indexPath)) {
+      // Read file and serve as HTML
+      const content = fs.readFileSync(indexPath, 'utf8');
+      res.setHeader('Content-Type', 'text/html');
+      res.send(content);
+    } else {
+      // If file not found, try to list what's available for debugging
+      console.log('Trying to find index.html in:', possiblePaths);
+      console.log('__dirname:', __dirname);
+      console.log('process.cwd():', process.cwd());
+      console.log('basePath:', basePath);
+      
+      // Fallback: return simple HTML redirect
+      res.status(200).send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta http-equiv="refresh" content="0; url=/index.html">
+          <title>Redirecting...</title>
+        </head>
+        <body>
+          <p>Redirecting to <a href="/index.html">index.html</a></p>
+          <script>window.location.href = '/index.html';</script>
+        </body>
+        </html>
+      `);
+    }
+  } catch (error) {
+    console.error('Error serving index.html:', error);
+    res.status(500).send('Error: ' + error.message);
+  }
+});
+
+// Serve index.html explicitly
+app.get('/index.html', (req, res) => {
+  try {
+    const possiblePaths = [
+      path.join(__dirname, '..', 'index.html'),
+      path.join(process.cwd(), 'index.html'),
+      '/var/task/index.html',
+      path.join(basePath, 'index.html')
+    ];
+    
+    let indexPath = null;
+    for (const p of possiblePaths) {
+      if (fs.existsSync(p)) {
+        indexPath = p;
+        break;
+      }
+    }
+    
+    if (indexPath && fs.existsSync(indexPath)) {
+      const content = fs.readFileSync(indexPath, 'utf8');
+      res.setHeader('Content-Type', 'text/html');
+      res.send(content);
     } else {
       res.status(404).send('index.html not found');
     }
+  } catch (error) {
+    res.status(500).send('Error: ' + error.message);
   }
 });
 
