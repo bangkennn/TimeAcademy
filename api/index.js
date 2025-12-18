@@ -47,7 +47,27 @@ function getBasePath() {
 const basePath = getBasePath();
 const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
 
-// Protect admin.html (only route we handle for HTML files)
+// Serve root path - serve index.html
+app.get('/', (req, res) => {
+  const indexPath = path.join(basePath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send('index.html not found');
+  }
+});
+
+// Serve index.html explicitly
+app.get('/index.html', (req, res) => {
+  const indexPath = path.join(basePath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send('index.html not found');
+  }
+});
+
+// Protect admin.html
 app.get('/admin.html', (req, res, next) => {
   if (req.session && req.session.isAuthenticated) {
     return res.sendFile(path.join(basePath, 'admin.html'));
@@ -56,8 +76,7 @@ app.get('/admin.html', (req, res, next) => {
   }
 });
 
-// Serve static files only in local development
-// In Vercel, static files (index.html, CSS, JS, images) are served automatically by Vercel
+// Serve static files
 if (!isVercel) {
   // Local development - serve all static files
   app.use(express.static(basePath, {
@@ -65,9 +84,15 @@ if (!isVercel) {
   }));
   app.use('/pdf', express.static(path.join(basePath, 'pdf')));
 } else {
-  // In Vercel, only serve PDF files through serverless function
-  // Other static files are served automatically by Vercel
+  // In Vercel, serve static files through serverless function
+  // This ensures all files are accessible
   app.use('/pdf', express.static(path.join(basePath, 'pdf')));
+  
+  // Serve other static files (CSS, JS, images, fonts)
+  app.use(express.static(basePath, {
+    index: false, // We handle index.html explicitly above
+    dotfiles: 'ignore'
+  }));
 }
 
 // Authentication credentials

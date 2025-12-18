@@ -8,6 +8,13 @@
     {
       "src": "/admin.html",
       "dest": "/api/index.js"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.js"
     }
   ],
   "functions": {
